@@ -1,10 +1,12 @@
 import { Module, OnModuleInit } from "@nestjs/common";
 import { RabbitMQService } from "./services/rabbitMQ.service";
+import { dreamProvider } from "../../applications/modules/dream/providers/dream.provider";
+import { SocketIOModule } from "../socketIO/socketIO.module";
 
 @Module({
-  imports: [],
+  imports: [SocketIOModule],
   controllers: [],
-  providers: [RabbitMQService],
+  providers: [RabbitMQService, ...dreamProvider],
   exports: [RabbitMQService]
 })
 
