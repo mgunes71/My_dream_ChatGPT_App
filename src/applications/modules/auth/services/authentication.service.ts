@@ -49,17 +49,10 @@ export class AuthenticationService {
       throw new BadRequestException("user already exist");
     }
 
-    const [err,salt] = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
 
-    if (err) {
-      throw err;
-    }
+    const hashedPassword = await bcrypt.hash(registerDto.password, salt);
 
-    const [errHash,hashedPassword] = await bcrypt.hash(registerDto.password, salt);
-
-    if (errHash) {
-      throw err;
-    }
 
     const registeredUser = await this.userRepository.create(
       {

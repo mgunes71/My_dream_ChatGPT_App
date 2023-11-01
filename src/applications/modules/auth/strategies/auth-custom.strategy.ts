@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-custom";
 import { JwtService } from "@nestjs/jwt";
@@ -8,12 +8,10 @@ import { UserEntity } from "../../../../core/database/models/user.model";
 
 @Injectable()
 export class AuthCustomStrategy extends PassportStrategy(Strategy, 'jwt') {
-  private readonly userRepository: typeof UserEntity;
+  @Inject('USER_REPOSITORY') private readonly userRepository: typeof UserEntity;
 
   constructor(private jwtService: JwtService) {
     super();
-
-    this.userRepository = UserEntity;
   }
 
   async getAuthenticationToken(req: Request) {
@@ -39,7 +37,7 @@ export class AuthCustomStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('session is not valid');
     }
 
-    const user = await UserEntity.findByPk(payload.id);
+    const user = await this.userRepository.findByPk(payload.id);
 
     return user
   }

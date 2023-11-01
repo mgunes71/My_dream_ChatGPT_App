@@ -5,4 +5,13 @@ import { UserEntity } from "../../../../core/database/models/user.model";
 export class UserService {
   constructor(@Inject('USER_REPOSITORY') private userRepository: typeof UserEntity) {
   }
+
+  async findByPk(id: number) {
+    try {
+      const user = await this.userRepository.findByPk(id);
+      return user;
+    } catch (e) {
+      throw new BadRequestException('user not found');
+    }
+  }
 }
