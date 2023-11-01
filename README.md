@@ -58,6 +58,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## This app is with NestJS with SocketIO and RabbitMQ It is a Dream interpreter made using ChatGPT
+
 ## Note
 Then create your api key from this address and add it to your environment file.
 ```
