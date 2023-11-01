@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UserEntity } from "./models/user.model";
+import { DreamEntity } from "./models/dream.model";
 
 
 @Module({
@@ -11,7 +13,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      models: [],
+      models: [UserEntity, DreamEntity],
       autoLoadModels: true,
 
       // define: {
