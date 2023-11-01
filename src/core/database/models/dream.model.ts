@@ -29,6 +29,9 @@ export class DreamEntity extends Model<DreamEntity>{
   @Column(DataType.TEXT)
   text: string;
 
+  @Column(DataType.TEXT)
+  question: string;
+
   @ForeignKey(() => UserEntity)
   @Column(DataType.INTEGER)
   userId: number;
