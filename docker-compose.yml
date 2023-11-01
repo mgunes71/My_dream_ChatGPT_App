@@ -12,6 +12,15 @@ services:
       - POSTGRESQL_PASSWORD=${DB_PASS}
       - POSTGRESQL_DATABASE=${DB_NAME}
 
+  rabbitmq:
+    image: bitnami/rabbitmq:latest
+    ports:
+      - '${RABBITMQ_PORT}:5672'
+      - '${RABBITMQ_MANAGEMENT_PORT}:15672'
+    environment:
+      - RABBITMQ_USERNAME=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASS}
+
 volumes:
   postgresql_data:
     driver: local
