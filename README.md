@@ -58,16 +58,57 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Note
+Then create your api key from this address and add it to your environment file.
+```
+https://platform.openai.com/account/api-keys
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+First, let's configure our environment file for rabbit settings and database settings.
+```js
+version: '2'
 
-## Stay in touch
+services:
+  postgresql:
+    image: bitnami/postgresql:latest
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=${DB_USER}
+      - POSTGRESQL_PASSWORD=${DB_PASS}
+      - POSTGRESQL_DATABASE=${DB_NAME}
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  rabbitmq:
+    image: bitnami/rabbitmq:latest
+    ports:
+      - '${RABBITMQ_PORT}:5672'
+      - '${RABBITMQ_MANAGEMENT_PORT}:15672'
+    environment:
+      - RABBITMQ_USERNAME=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASS}
 
-## License
+volumes:
+  postgresql_data:
+    driver: local
 
-Nest is [MIT licensed](LICENSE).
+
+```
+
+Run our compose file.
+```
+docker-compose up -d
+```
+
+
+we will use here
+```js
+  constructor(@Inject("DREAM_REPOSITORY") private dreamRepository: typeof DreamEntity, private rabbitMQService: RabbitMQService) {
+    this.openai = new OpenAI({
+      apiKey: process.env.OPEN_AI_API_KEY
+    });
+  }
+```
+
+
